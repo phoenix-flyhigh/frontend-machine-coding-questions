@@ -14,4 +14,28 @@
 
 This project is a collection of frontend machine coding question solutions. 
 The master branch contains the starter repo. 
-Each brnach solves the problem as suggested by the branch name.
+Each branch solves the problem as suggested by the branch name.
+
+1. Navigate to the project directory:
+
+   ```bash
+   cd your-project-name
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+4. Checkout to a specific branch to refer the solutions.
+
+   ```bash
+   git checkout <branch-name>
+   ```
