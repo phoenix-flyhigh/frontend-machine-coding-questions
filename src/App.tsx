@@ -3,20 +3,20 @@ import "./App.css";
 
 const Timers = () => {
   const [seconds, setSeconds] = useState<number>(30);
-  const [timers, setTimers] = useState<number[]>([]);
+  const [timersInMilliseconds, setTimers] = useState<number[]>([]);
 
   const addTimer = (timeLimit: number) => {
     timeLimit > 0
-      ? setTimers((prev) => [...prev, timeLimit])
+      ? setTimers((prev) => [...prev, timeLimit * 1000])
       : alert("Enter valid time limit");
   };
 
   useEffect(() => {
     const interval = setInterval(() => {
       setTimers((timers) =>
-        timers.map((timer) => timer - 1).filter((timer) => timer > 0)
+        timers.map((timer) => timer - 100).filter((timer) => timer > 100)
       );
-    }, 1000);
+    }, 100);
 
     return () => {
       clearInterval(interval);
@@ -45,8 +45,8 @@ const Timers = () => {
         </button>
       </form>
       <div className="flex gap-12 flex-wrap">
-        {timers.map((timer) => (
-          <span key={timer}>{timer}</span>
+        {timersInMilliseconds.map((timer) => (
+          <span key={timer}>{timer / 1000}</span>
         ))}
       </div>
     </div>
