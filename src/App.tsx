@@ -1,10 +1,10 @@
-import React from "react";
+import CurrencyConverter from "./components/CurrencyConverter";
 import "./App.css";
 
 function App() {
   return (
-    <div className="bg-black h-screen w-full flex justify-center items-center">
-      <h1 className="text-3xl text-white">Vite + React + TS + Testing Template</h1>
+    <div className="bg-gray-100 h-screen w-full flex justify-center items-center">
+      <CurrencyConverter />
     </div>
   );
 }
