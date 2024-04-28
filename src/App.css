@@ -1,0 +1,7 @@
+.dark-theme {
+  @apply bg-slate-800 text-orange-100;
+}
+
+.light-theme {
+  @apply bg-white text-slate-800;
+}
