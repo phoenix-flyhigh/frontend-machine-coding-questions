@@ -1,10 +1,11 @@
 import React from "react";
 import "./App.css";
+import { CodeReader } from "./CodeReader";
 
 function App() {
   return (
     <div className="bg-black h-screen w-full flex justify-center items-center">
-      <h1 className="text-3xl text-white">Vite + React + TS + Testing Template</h1>
+      <CodeReader />
     </div>
   );
 }
