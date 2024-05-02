@@ -2,6 +2,16 @@
 import { useState } from "react";
 import "./App.css";
 
+const compose =
+  (...functions: ((val: number) => number)[]) =>
+  (args) =>
+    functions.reduceRight((acc, fn) => fn(acc), args);
+  
+const pipe =
+  (...functions: ((val: number) => number)[]) =>
+  (args) =>
+    functions.reduce((acc, fn) => fn(acc), args);
+
 const CustomCalculator = () => {
   const half = (val: number) => val / 2;
   const double = (val: number) => val * 2;
@@ -10,12 +20,15 @@ const CustomCalculator = () => {
 
   const [input, setInput] = useState("");
   const [output, setOutput] = useState<number | null>(null);
-  const [operations, setOperations] = useState<string[]>([]);
+  const [operations, setOperations] = useState<((val: number) => number)[]>([]);
+  const [functionType, setFunctionType] = useState("compose");
 
   const calculateResult = () => {
-    const result: number = operations.reduce((acc, func) => {
-      return eval(func)(acc);
-    }, parseFloat(input));
+    // const result: number = operations.reduce((acc, func) => func(acc), parseFloat(input));
+    const result =
+      functionType === "compose"
+        ? compose(...operations)(parseFloat(input))
+        : pipe(...operations)(parseFloat(input));
     setOutput(result);
   };
 
@@ -25,7 +38,7 @@ const CustomCalculator = () => {
     setOutput(null);
   };
 
-  const addOperation = (operation: string) => {
+  const addOperation = (operation: (val: number) => number) => {
     setOperations((prev) => [...prev, operation]);
   };
 
@@ -33,18 +46,26 @@ const CustomCalculator = () => {
     <div className="flex flex-col gap-8 items-center justify-center">
       <div className="flex gap-8">
         <div className="flex">
-          <button className="btn" onClick={() => addOperation("half")}>
+          <button className="btn" onClick={() => addOperation(half)}>
             half
           </button>
-          <button className="btn" onClick={() => addOperation("double")}>
+          <button className="btn" onClick={() => addOperation(double)}>
             double
           </button>
-          <button className="btn" onClick={() => addOperation("increment")}>
+          <button className="btn" onClick={() => addOperation(increment)}>
             increment
           </button>
-          <button className="btn" onClick={() => addOperation("decrement")}>
+          <button className="btn" onClick={() => addOperation(decrement)}>
             decrement
           </button>
+          <select
+            value={functionType}
+            onChange={(e) => setFunctionType(e.target.value)}
+            className="btn ml-4"
+          >
+            <option value={"compose"}>compose functions</option>
+            <option value={"pipe"}>pipe functions</option>
+          </select>
         </div>
         <button className="btn" onClick={clearData}>
           clear
@@ -53,7 +74,7 @@ const CustomCalculator = () => {
       <h1 className="text-2xl font-bold">My Function</h1>
       <div className="flex flex-col gap-2 items-center">
         {operations.map((s) => (
-          <p key={s}>{s}</p>
+          <p key={s.name}>{s.name}</p>
         ))}
       </div>
       <form
