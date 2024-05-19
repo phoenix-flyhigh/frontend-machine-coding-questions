@@ -39,3 +39,8 @@ Each branch solves the problem as suggested by the branch name.
    ```bash
    git checkout <branch-name>
    ```
+
+5. Problem statement 
+
+   Ecommerce page with filters
+   ![alt text](image.png)
