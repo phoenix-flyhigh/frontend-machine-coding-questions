@@ -8,41 +8,42 @@ import {
 } from "react";
 import { TNote } from "../App";
 import Note from "./Note";
+import { checkOverlapping, createNewNoteWithPosition } from "../notesHelper";
 
 interface NotesProps {
   notes: TNote[];
   setNotes: Dispatch<SetStateAction<TNote[]>>;
 }
 
+export interface NoteDimensions {
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+}
+
 const Notes = ({ notes, setNotes }: NotesProps) => {
   const noteRefs = useRef<RefObject<HTMLDivElement>[]>([]);
 
   useEffect(() => {
-    const data = localStorage.getItem("notes");
+    const localData = localStorage.getItem("notes");
 
-    const savedNotes: TNote[] =
-      data !== "undefined" ? JSON.parse(data ?? "[]") : [];
+    const savedNotes: TNote[] = JSON.parse(localData ?? "[]");
     const updatedNotes = notes.map((note) => {
       const savedNote = savedNotes.find((x) => x.id === note.id);
       if (savedNote) {
         return savedNote;
       } else {
-        return { ...note, position: determineNewPosition() };
+        return createNewNoteWithPosition(note, notes, noteRefs);
       }
     });
-    localStorage.setItem("notes", JSON.stringify(updatedNotes));
-    setNotes(updatedNotes);
+    const updatedData = [
+      ...updatedNotes,
+      ...savedNotes.filter((saved) => !notes.some((x) => x.id === saved.id)),
+    ];
+    localStorage.setItem("notes", JSON.stringify(updatedData));
+    setNotes(updatedData);
   }, [notes.length]);
-
-  const determineNewPosition = () => {
-    const maxX = window.innerWidth - 250;
-    const maxY = window.innerHeight - 250;
-
-    return {
-      x: Math.ceil(Math.random() * maxX),
-      y: Math.ceil(Math.random() * maxY),
-    };
-  };
 
   const handleDragStart = (
     note: TNote,
@@ -63,13 +64,16 @@ const Notes = ({ notes, setNotes }: NotesProps) => {
       noteRef.style.top = `${newY}px`;
       noteRef.style.left = `${newX}px`;
     };
+
     const handleMouseUp = () => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
 
       const finalPosition = noteRef.getBoundingClientRect();
+      const currentNote = noteRefs.current[note.id].current as HTMLDivElement;
+      const currentRect = currentNote.getBoundingClientRect();
 
-      if (checkOverlapping(note.id)) {
+      if (checkOverlapping(notes, noteRefs, currentRect, note.id)) {
         noteRef.style.top = `${startPos.y}px`;
         noteRef.style.left = `${startPos.x}px`;
       } else {
@@ -90,29 +94,8 @@ const Notes = ({ notes, setNotes }: NotesProps) => {
     document.addEventListener("mouseup", handleMouseUp);
   };
 
-  const checkOverlapping = (id: number) => {
-    const currentNote = noteRefs.current[id].current as HTMLDivElement;
-    const currentRect = currentNote.getBoundingClientRect();
-
-    return notes.some((x) => {
-      if (x.id === id) {
-        return false;
-      }
-      const otherRef = noteRefs.current[x.id].current as HTMLDivElement;
-      const otherRect = otherRef.getBoundingClientRect();
-
-      const overlap = !(
-        currentRect.top > otherRect.bottom ||
-        currentRect.bottom < otherRect.top ||
-        currentRect.right < otherRect.left ||
-        currentRect.left > otherRect.right
-      );
-      return overlap;
-    });
-  };
-
   return (
-    <div>
+    <div className="h-full w-full p-8" id="notes-container">
       {notes.map((x) => (
         <Note
           key={x.id}
