@@ -39,3 +39,10 @@ Each branch solves the problem as suggested by the branch name.
    ```bash
    git checkout <branch-name>
    ```
+
+5. Problem statement
+      1. UseThrottle
+      2. UseDebounce
+      3. UseCustomCallback
+      4. UseOutsideClick
+      5. UseMediaQuery
