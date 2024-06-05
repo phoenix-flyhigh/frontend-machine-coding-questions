@@ -1,5 +1,6 @@
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import "./App.css";
+import { useDebounce } from "./hooks/useDebounce";
 
 interface User {
   id: number;
@@ -16,7 +17,7 @@ const MultiSelectSearch = () => {
     new Set()
   );
   const [activeSuggestion, setActiveSuggestion] = useState(-1);
-
+  const debouncedSearchTerm = useDebounce(searchTerm, 700);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -27,19 +28,25 @@ const MultiSelectSearch = () => {
     const controller = new AbortController();
     const signal = controller.signal;
 
+    if (debouncedSearchTerm.length === 0) {
+      return;
+    }
+
     const fetchSuggestions = () => {
-      fetch(`https://dummyjson.com/users/search?q=${searchTerm}`, { signal })
+      fetch(`https://dummyjson.com/users/search?q=${debouncedSearchTerm}`, {
+        signal,
+      })
         .then((res) => res.json())
         .then((data) => setSuggestions(data.users));
     };
 
-    if (searchTerm.trim().length > 0) {
+    if (debouncedSearchTerm.trim().length > 0) {
       fetchSuggestions();
       setActiveSuggestion(-1);
     } else {
       setSuggestions([]);
     }
-  }, [searchTerm]);
+  }, [debouncedSearchTerm]);
 
   const handleUserSelect = (user: User) => {
     setSelectedUsers((prev) => [...prev, user]);
