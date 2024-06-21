@@ -39,3 +39,7 @@ Each branch solves the problem as suggested by the branch name.
    ```bash
    git checkout <branch-name>
    ```
+
+5. Problem statement
+
+   Link: https://devtools.tech/questions/s/how-to-build-a-password-strength-checker-in-react-js-or-frontend-interview-question-or-javascript---qid---tQR3mRIXsSK1tDfCliYj
