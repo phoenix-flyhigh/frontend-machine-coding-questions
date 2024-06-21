@@ -1,0 +1,11 @@
+.bar {
+    @apply w-16 relative transition ease-out;
+}
+
+.bar:hover .tooltip {
+    @apply opacity-100;
+}
+
+.tooltip {
+    @apply bg-black text-white py-1 rounded-lg items-center justify-center text-xs opacity-0 absolute whitespace-nowrap px-2 -translate-y-[120%] right-1/2 translate-x-1/2 flex-wrap
+}
