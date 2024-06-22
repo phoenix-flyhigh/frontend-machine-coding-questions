@@ -1,0 +1,7 @@
+.btn {
+    @apply bg-green-600 text-white px-3 py-1 rounded-md text-lg
+}
+
+.disabled {
+    @apply bg-gray-500;
+}

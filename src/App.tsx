@@ -1,10 +1,10 @@
-import React from "react";
 import "./App.css";
+import { Board } from "./components/Board";
 
 function App() {
   return (
-    <div className="bg-black h-screen w-full flex justify-center items-center">
-      <h1 className="text-3xl text-white">Vite + React + TS + Testing Template</h1>
+    <div className="bg-black h-screen w-full flex justify-center">
+      <Board />
     </div>
   );
 }
