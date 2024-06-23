@@ -39,3 +39,7 @@ Each branch solves the problem as suggested by the branch name.
    ```bash
    git checkout <branch-name>
    ```
+
+5. Problem statement 
+
+   Link: https://devtools.tech/questions/s/how-to-build-a-ui-card-with-tabs-or-frontend-coding-challenge-or-javascript-interview-question-or-react---qid---7NrTygmpStPLFdWWNcts
