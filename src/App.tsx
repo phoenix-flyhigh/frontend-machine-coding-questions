@@ -1,10 +1,11 @@
 import React from "react";
 import "./App.css";
+import { Dictionary } from "./components/Dictionary";
 
 function App() {
   return (
-    <div className="bg-black h-screen w-full flex justify-center items-center">
-      <h1 className="text-3xl text-white">Vite + React + TS + Testing Template</h1>
+    <div className="bg-black text-white min-h-screen w-full flex justify-center items-center overflow-auto p-6">
+      <Dictionary />
     </div>
   );
 }

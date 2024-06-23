@@ -39,3 +39,7 @@ Each branch solves the problem as suggested by the branch name.
    ```bash
    git checkout <branch-name>
    ```
+
+5. Problem statement
+
+   Link: https://devtools.tech/questions/s/build-a-dictionary-app-or-react-js-or-frontend-coding-challenge---qid---rnrC8DZ3wOanc86iJ5hK
