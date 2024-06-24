@@ -1,0 +1,21 @@
+.panel {
+    animation: bounce 2s forward;
+}
+
+@keyframes bounce {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(0%);
+    }   
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+    to{
+        transform: translateX(0%);
+    }
+}
