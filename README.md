@@ -40,6 +40,10 @@ Each branch solves the problem as suggested by the branch name.
    git checkout <branch-name>
    ```
 
+5. Problem statement
+
+   Link: https://devtools.tech/questions/s/how-to-build-a-file-explorer-atlassian-frontend-machine-coding-round-question-or-javascript-interview-question-or-react-js---qid---i2WQCZkIdpwGp2tG1LXJ
+
 ## Branches
 
 1. [accordions](https://github.com/phoenix-flyhigh/frontend-machine-coding-questions/tree/accordions)
