@@ -100,4 +100,4 @@ Each branch solves the problem as suggested by the branch name.
 56. [useEffect-polyfill](https://github.com/phoenix-flyhigh/frontend-machine-coding-questions/tree/useEffect-polyfill)
 57. [useMemo-polyfill](https://github.com/phoenix-flyhigh/frontend-machine-coding-questions/tree/useMemo-polyfill)
 58. [user-avatar-screen](https://github.com/phoenix-flyhigh/frontend-machine-coding-questions/tree/user-avatar-screen)
-
+59. [file-explorer-advanced](https://github.com/phoenix-flyhigh/frontend-machine-coding-questions/tree/file-explorer-advanced)
