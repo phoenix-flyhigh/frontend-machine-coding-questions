@@ -40,6 +40,11 @@ Each branch solves the problem as suggested by the branch name.
    git checkout <branch-name>
    ```
 
+5. Problem statement
+
+   Link: https://devtools.tech/questions/s/how-to-create-otp-input-component-or-frontend-coding-challege-or-javascript-or-html-or-css-or-react-js---qid---IYpVbRl1CtCTgZbVe3oz
+   
+
 ## Branches
 
 1. [accordions](https://github.com/phoenix-flyhigh/frontend-machine-coding-questions/tree/accordions)
