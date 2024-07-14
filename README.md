@@ -40,6 +40,11 @@ Each branch solves the problem as suggested by the branch name.
    git checkout <branch-name>
    ```
 
+5. Problem statement:
+
+   Link: https://devtools.tech/questions/s/build-an-autocomplete-using-reactjs-or-type-one-or-frontend-coding-challenge-or-javascript-interview-question---qid---wIsJwxPV1Ka0GdmTIXQX
+
+
 ## Branches
 
 1. [accordions](https://github.com/phoenix-flyhigh/frontend-machine-coding-questions/tree/accordions)
