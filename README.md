@@ -40,6 +40,10 @@ Each branch solves the problem as suggested by the branch name.
    git checkout <branch-name>
    ```
 
+5. Problem statement
+
+   Link: https://frontendeval.com/questions/memory-game
+
 ## Branches
 
 1. [accordions](https://github.com/phoenix-flyhigh/frontend-machine-coding-questions/tree/accordions)
