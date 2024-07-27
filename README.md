@@ -40,6 +40,11 @@ Each branch solves the problem as suggested by the branch name.
    git checkout <branch-name>
    ```
 
+5. Problem statement 
+
+   Link: https://frontendeval.com/questions/crypto-converter
+   
+
 ## Branches
 
 1. [accordions](https://github.com/phoenix-flyhigh/frontend-machine-coding-questions/tree/accordions)
