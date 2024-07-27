@@ -101,3 +101,8 @@ Each branch solves the problem as suggested by the branch name.
 57. [useMemo-polyfill](https://github.com/phoenix-flyhigh/frontend-machine-coding-questions/tree/useMemo-polyfill)
 58. [user-avatar-screen](https://github.com/phoenix-flyhigh/frontend-machine-coding-questions/tree/user-avatar-screen)
 59. [file-explorer-advanced](https://github.com/phoenix-flyhigh/frontend-machine-coding-questions/tree/file-explorer-advanced)
+60. [otp-form-variant-2](https://github.com/phoenix-flyhigh/frontend-machine-coding-questions/tree/otp-form-variant-2)
+61. [upi-id-autocomplete](https://github.com/phoenix-flyhigh/frontend-machine-coding-questions/tree/upi-id-autocomplete)
+62. [memory-game](https://github.com/phoenix-flyhigh/frontend-machine-coding-questions/tree/memory-game)
+63. [wordle-game](https://github.com/phoenix-flyhigh/frontend-machine-coding-questions/tree/wordle-game)
+
