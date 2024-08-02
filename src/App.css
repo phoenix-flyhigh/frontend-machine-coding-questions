@@ -1,0 +1,30 @@
+.top-right {
+    @apply top-0 right-0
+}
+
+.top-left {
+    @apply top-0 left-0
+}
+
+.bottom-right {
+    @apply bottom-0 right-0
+}
+
+.bottom-left {
+    @apply bottom-0 left-0
+}
+
+.top-center {
+    @apply top-0 left-1/2 -translate-x-1/2 mt-12
+}
+
+.bottom-center {
+    @apply bottom-0 left-1/2 -translate-x-1/2 mb-12
+}
+
+.btn {
+    @apply w-2/5 text-white p-6;
+}
+
+
+
