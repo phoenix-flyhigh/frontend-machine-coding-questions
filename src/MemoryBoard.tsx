@@ -15,87 +15,163 @@ const getShuffledArray = (arrLength: number) => {
   return result;
 };
 
-export const MemoryBoard = ({ boardSize }: { boardSize: number }) => {
-  const arrayLength = (boardSize * boardSize) / 2;
-  const initialCards = [
-    ...getShuffledArray(arrayLength),
-    ...getShuffledArray(arrayLength),
-  ];
-  const [cards, setCards] = useState(initialCards);
+export const MemoryBoard = ({
+  boardSize,
+  maxMoves,
+}: {
+  boardSize: number;
+  maxMoves: number;
+}) => {
+  const [cards, setCards] = useState<number[]>([]);
   const [selectedCards, setSelectedCards] = useState<number[]>([]);
+  const [openedCards, setOpenedCards] = useState<number[]>([]);
   const [showPlayAgain, setShowPlayAgain] = useState(false);
-  const [time, setTime] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime((prev) => prev + 1);
-    }, 1000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+  const [gameOver, setGameOver] = useState(false);
+  const [hasWon, setHasWon] = useState(false);
+  const [moves, setMoves] = useState(0);
 
   const handlePlayAgain = () => {
-    setCards(initialCards);
+    shuffleCards();
+    setOpenedCards([]);
+    setSelectedCards([]);
+    setMoves(0);
+    setHasWon(false);
     setShowPlayAgain(false);
-    setTime(0);
+    setGameOver(false);
+  };
+
+  const resetGame = () => {
+    shuffleCards();
+    setOpenedCards([]);
+    setSelectedCards([]);
+    setMoves(0);
+  };
+
+  const shuffleCards = () => {
+    const arrayLength = (boardSize * boardSize) / 2;
+
+    const newBoard = [
+      ...getShuffledArray(arrayLength),
+      ...getShuffledArray(arrayLength),
+    ];
+    setCards(newBoard);
+  };
+
+  useEffect(() => {
+    shuffleCards();
+    setOpenedCards([]);
+    setSelectedCards([]);
+    setHasWon(false);
+    setShowPlayAgain(false);
+    setMoves(0);
+  }, [boardSize]);
+
+  const isSelected = (index: number) => selectedCards.includes(index);
+  const isOpened = (index: number) => openedCards.includes(index);
+
+  const handleMove = () => {
+    const currentMoves = moves + 1;
+
+    if (currentMoves === maxMoves && !hasWon) {
+      setShowPlayAgain(true);
+      setGameOver(true);
+    }
+
+    setMoves(currentMoves);
   };
 
   const handleClick = (index: number) => {
-    if (selectedCards.length === 2) return;
+    if (
+      selectedCards.length === 2 ||
+      isOpened(index) ||
+      isSelected(index) ||
+      gameOver
+    )
+      return;
+
     const newSelectedCards = [...selectedCards, index];
 
     setSelectedCards(newSelectedCards);
     if (newSelectedCards.length === 2) {
       const [card1, card2] = newSelectedCards;
       if (cards[card1] === cards[card2]) {
-        const selectedValue = cards[card1];
-        setTimeout(() => {
-          const newCards = cards.map((x) => (x === selectedValue ? 0 : x));
-          setCards(newCards);
-          setSelectedCards([]);
-          if (!newCards.filter(Boolean).length) {
-            setShowPlayAgain(true);
-          }
-        }, 1500);
+        const newOpenedCards = [...openedCards, ...newSelectedCards];
+        setOpenedCards(newOpenedCards);
+        setSelectedCards([]);
+        if (newOpenedCards.length === cards.length) {
+          setHasWon(true);
+          setShowPlayAgain(true);
+        }
       } else {
         setTimeout(() => {
           setSelectedCards([]);
-        }, 1500);
+        }, 1000);
       }
     }
+    handleMove();
   };
 
-  return showPlayAgain ? (
-    <button
-      className="border-2 border-white px-4 py-3"
-      onClick={handlePlayAgain}
-    >
-      Play Again
-    </button>
-  ) : (
-    <div className="flex flex-col gap-6">
-      <p className="flex self-end items-center">
-        Timer <span className="text-lg"> &nbsp;{time}</span>s
-      </p>
+  const getCardBgColor = (index: number) => {
+    if (isOpened(index)) return "bg-green-500";
+    if (isSelected(index)) return "bg-blue-500";
+    return "bg-slate-300";
+  };
+
+  const shouldShowCard = (index: number) => {
+    if (isSelected(index) || isOpened(index)) return true;
+    return false;
+  };
+
+  return (
+    <div className="text-white flex flex-col gap-6 items-center">
+      {maxMoves > 0 && (
+        <p className="text-black text-xl">
+          Moves: {moves} / {maxMoves}
+        </p>
+      )}
       <div
         className={`grid gap-3`}
         style={{ gridTemplateColumns: `repeat(${boardSize}, 1fr)` }}
       >
-        {cards.map((x, index) =>
-          x ? (
-            <button
-              key={index}
-              onClick={() => handleClick(index)}
-              className="border-2 border-white bg-slate-800 p-2 w-10 h-10 flex items-center justify-center"
-            >
-              {selectedCards.includes(index) ? x : ""}
-            </button>
-          ) : (
-            <div className="w-10 h-10" key={index}></div>
-          )
-        )}
+        {cards.map((x, index) => (
+          <button
+            key={index}
+            onClick={() => handleClick(index)}
+            disabled={isOpened(index) || isSelected(index)}
+            className={`${getCardBgColor(
+              index
+            )} text-md border-2 rounded-md p-2 w-20 h-20 flex items-center justify-center transition-all duration-300`}
+          >
+            {shouldShowCard(index) ? x : ""}
+          </button>
+        ))}
       </div>
+      {hasWon ? (
+        <p className="text-2xl text-green-500 font-bold animate-bounce">
+          You Won !!
+        </p>
+      ) : (
+        gameOver && (
+          <p className="text-2xl text-red-700 font-bold animate-bounce">
+            Game Over !!
+          </p>
+        )
+      )}
+      {showPlayAgain ? (
+        <button
+          className="bg-green-500 rounded-lg px-4 py-3 text-lg"
+          onClick={handlePlayAgain}
+        >
+          Play Again
+        </button>
+      ) : (
+        <button
+          className="bg-green-500 rounded-lg px-3 py-2 text-lg w-fit "
+          onClick={resetGame}
+        >
+          Reset Game
+        </button>
+      )}
     </div>
   );
 };
