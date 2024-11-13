@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import { useSessionStorage } from "./useSessionStorage";
 
 interface Product {
   id: number;
@@ -8,21 +9,37 @@ interface Product {
 }
 
 const ProductsPage = () => {
-  const ITEMS_PER_PAGE = 10;
+  const ITEMS_PER_PAGE = 12;
   const [products, setProducts] = useState<Product[]>([]);
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false)
   const [totalPages, setTotalPages] = useState(0);
+  const {getItem, setItem} = useSessionStorage()
 
   useEffect(() => {
+    const productsCache = getItem(`page-${page}`)
+    if(productsCache){
+      const totalPages = getItem("total-pages")
+      setTotalPages(totalPages) // if we had products, total pages would be available too. refer code below
+      setProducts(productsCache)
+      return
+    }
     const fetchProducts = async () => {
+      setLoading(true)
       const res = await fetch(
         `https://dummyjson.com/products?limit=${ITEMS_PER_PAGE}&skip=${
-          page * 10 - 10
+          page * ITEMS_PER_PAGE - ITEMS_PER_PAGE
         }`
       );
       const data = await res.json();
       setProducts(data.products);
-      if (!totalPages) setTotalPages(Math.ceil(data.total / ITEMS_PER_PAGE));
+      setItem(`page-${page}`, data.products)
+      setLoading(false)
+      if (!totalPages) {
+        const pages = Math.ceil(data.total / ITEMS_PER_PAGE)
+        setTotalPages(pages);
+        setItem("total-pages", pages)
+      }
     };
     fetchProducts();
   }, [page, totalPages]);
@@ -34,21 +51,22 @@ const ProductsPage = () => {
   return (
     <div className="w-2/3 flex flex-col gap-8 items-center">
       <h1 className="text-2xl font-bold">Products</h1>
+      {loading ? <h3>Loading...</h3> : 
       <div className="grid grid-cols-3 gap-6">
         {products.map((p) => (
           <div
             key={p.id}
-            className="flex flex-col justify-center items-center gap-2 bg-gray-200 rounded-md p-3"
+            className="flex flex-col justify-center items-center gap-2 bg-gray-200 rounded-md p-3 w-40 h-44"
           >
             <img
               src={p.thumbnail}
               alt={p.title}
-              className="w-24 h-24 object-contain"
+              className="w-24 h-24 object-cover"
             />
             <p>{p.title}</p>
           </div>
         ))}
-      </div>
+      </div>}
       <div className="flex w-full text-lg justify-between">
         {page > 1 && (
           <button onClick={() => handlePageSelect(page - 1)}>Prev</button>
