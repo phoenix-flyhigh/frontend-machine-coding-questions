@@ -25,11 +25,11 @@ export const useTicTacToe = (boardSize: number) => {
 
   const calculateWinner = (newTiles: (string | null)[]) => {
     winningPatterns.forEach((pattern) => {
-      const result = pattern.reduce((acc, tile) => {
+      const result = pattern.reduce((acc, tile) => { // pattern with indices like [0, 1, 2]
         if (acc && newTiles[tile] === acc) {
           return acc;
         } else return null;
-      }, newTiles[pattern[0]]);
+      }, newTiles[pattern[0]]); // what the latest board contains at the first index of the pattern 
 
       if (result) {
         setWinner(result);
