@@ -1,0 +1,11 @@
+button {
+    border: 2px solid black;
+    width: fit-content;
+    padding: 8px !important;
+    border-radius: 8px;
+
+    &:focus {
+        outline: 1px solid rgb(249, 136, 7) !important;
+        outline-style: dotted;
+    }
+}

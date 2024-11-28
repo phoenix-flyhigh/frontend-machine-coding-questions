@@ -42,9 +42,11 @@ Each branch solves the problem as suggested by the branch name.
 
 5. Problem statement
 
-   https://youtu.be/v50uJDEFnqM?si=c6NUARh1BwdO2PlF
-   
-   https://devtools.tech/questions/s/how-to-create-notifications-list-component-razorpay-interview-question-or-react-js-or-javascript-or-html-or-css---qid---nxBpTX41Lx09DQjJCa6w
+Build keyboard accessible modal
+   1. when modal is opened, focus the first focusable element
+   2. TAB/SHIFT + TAB should be within the modal
+   3. ESC to close the modal
+   4. when closed, refocus the trigger 
 
 ## Branches
 

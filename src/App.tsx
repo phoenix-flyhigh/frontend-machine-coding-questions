@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import "./App.css";
+import Modal from "./Modal";
 
 function App() {
+  const [showModal, setShowModal] = useState(false);
+
+  const closeModal = () => {
+    setShowModal(false);
+    modalTriggerRef.current?.focus();
+  };
+
+  const modalTriggerRef = useRef<HTMLButtonElement | null>(null);
+  
   return (
-    <div className="bg-black h-screen w-full flex justify-center items-center">
-      <h1 className="text-3xl text-white">Vite + React + TS + Testing Template</h1>
+    <div className="relative h-screen w-full flex justify-center items-center">
+      <button ref={modalTriggerRef} onClick={() => setShowModal(true)}>
+        Show modal
+      </button>
+      {showModal && <Modal onClose={closeModal} />}
     </div>
   );
 }
