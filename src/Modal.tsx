@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useOutsideClick } from "./useOutsideClick";
 
 const Modal = ({ onClose }: { onClose: () => void }) => {
   const [showMore, setShowMore] = useState(false);
@@ -6,22 +7,23 @@ const Modal = ({ onClose }: { onClose: () => void }) => {
   const seeMore = () => setShowMore(true);
   const seeLess = () => setShowMore(false);
 
-  const modalRef = useRef<HTMLDivElement | null>(null);
+  const nodeRef: React.RefObject<HTMLDialogElement> = useOutsideClick(onClose)
+
   const firstFocussableRef = useRef<HTMLElement | null>(null);
   const lastFocussableRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const focussables = Array.from<HTMLElement>(
-      modalRef.current?.querySelectorAll("button, [href]") ?? []
+      nodeRef.current?.querySelectorAll("button, [href]") ?? []
     );
 
     firstFocussableRef.current = focussables[0];
     lastFocussableRef.current = focussables[focussables.length - 1];
 
     firstFocussableRef.current.focus();
-  }, [showMore]);
+  }, [showMore, nodeRef]);
 
-  const handleKeydown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleKeydown = (e: React.KeyboardEvent<HTMLDialogElement>) => {
     if (
       e.key === "Tab" &&
       !e.shiftKey &&
@@ -46,9 +48,8 @@ const Modal = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <div className="fixed flex justify-center items-center w-full h-full bg-black bg-opacity-50">
-      <div
-        ref={modalRef}
-        role="dialog"
+      <dialog
+        ref={nodeRef}
         onKeyDown={handleKeydown}
         className="bg-white w-1/3 p-6 rounded-lg flex flex-col gap-8 z-10"
       >
@@ -68,7 +69,7 @@ const Modal = ({ onClose }: { onClose: () => void }) => {
             <button onClick={seeLess}>See less</button>
           </div>
         )}
-      </div>
+      </dialog>
     </div>
   );
 };
