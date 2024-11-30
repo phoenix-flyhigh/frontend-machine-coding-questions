@@ -40,12 +40,6 @@ Each branch solves the problem as suggested by the branch name.
    git checkout <branch-name>
    ```
 
-5. Problem statement
-
-   https://youtu.be/v50uJDEFnqM?si=c6NUARh1BwdO2PlF
-   
-   https://devtools.tech/questions/s/how-to-create-notifications-list-component-razorpay-interview-question-or-react-js-or-javascript-or-html-or-css---qid---nxBpTX41Lx09DQjJCa6w
-
 ## Branches
 
 1. [accordions](https://github.com/phoenix-flyhigh/frontend-machine-coding-questions/tree/accordions)
@@ -111,4 +105,5 @@ Each branch solves the problem as suggested by the branch name.
 1. [upi-id-autocomplete](https://github.com/phoenix-flyhigh/frontend-machine-coding-questions/tree/upi-id-autocomplete)
 1. [memory-game](https://github.com/phoenix-flyhigh/frontend-machine-coding-questions/tree/memory-game)
 1. [wordle-game](https://github.com/phoenix-flyhigh/frontend-machine-coding-questions/tree/wordle-game)
+1. [shopping-checklist](https://github.com/phoenix-flyhigh/frontend-machine-coding-questions/tree/shopping-checklist)
 
