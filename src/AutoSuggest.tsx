@@ -1,5 +1,6 @@
 import { ReactNode, useState, useEffect } from "react";
 import { useDebounce } from "./useDebounce";
+import { useLocalStorage } from "./useLocalStorage";
 
 interface IAutoSuggest {
   onSelect: (itemName: string) => void;
@@ -29,15 +30,29 @@ export const AutoSuggest = ({ onSelect, fetchSuggestions }: IAutoSuggest) => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const debouncedInputText = useDebounce<string>(inputText, 500);
+  const { getItem, setItem } = useLocalStorage();
 
   useEffect(() => {
     (async () => {
-      if (inputText.length < 2 || !debouncedInputText) return;
+      if (
+        inputText.length < 2 ||
+        inputText !== debouncedInputText ||
+        !debouncedInputText
+      )
+        return;
       try {
         setLoading(true);
         setError(false);
+
+        const cachedSuggestions = getItem(debouncedInputText);
+        if (cachedSuggestions) {
+          setSuggestions(cachedSuggestions);
+          return;
+        }
+
         const response = await fetchSuggestions(debouncedInputText);
-        if (response) setSuggestions(response);
+        setItem(debouncedInputText, response);
+        setSuggestions(response);
       } catch {
         setError(true);
       } finally {
@@ -66,19 +81,21 @@ export const AutoSuggest = ({ onSelect, fetchSuggestions }: IAutoSuggest) => {
         onChange={handleInput}
         className="bg-black p-4 text-xl border-2 border-white rounded-lg w-full"
       />
-      {suggestions.length > 0 && (
-        <ul className="absolute top-full bg-black z-10 max-h-60 h-fit shadow-md overflow-scroll text-left w-full border-x-2 border-slate-500">
-          {loading && (
-            <li className="px-4 py-2 border-b-2 border-slate-500">
-              Loading suggestions...
-            </li>
-          )}
-          {error && (
-            <li className="px-4 py-2 border-b-2 border-slate-500">
-              Failed to load suggestions...
-            </li>
-          )}
-          {suggestions.map((s, i) => (
+      <ul className="absolute top-full bg-black z-10 max-h-60 h-fit shadow-md overflow-scroll text-left w-full border-x-2 border-slate-500">
+        {loading && (
+          <li className="px-4 py-2 border-b-2 border-slate-500">
+            Loading suggestions...
+          </li>
+        )}
+        {error && (
+          <li className="px-4 py-2 border-b-2 border-slate-500 text-red-500">
+            Failed to load suggestions.
+          </li>
+        )}
+        {!loading &&
+          !error &&
+          suggestions.length > 0 &&
+          suggestions.map((s, i) => (
             <li
               key={i}
               onClick={() => handleSelect(s)}
@@ -88,8 +105,7 @@ export const AutoSuggest = ({ onSelect, fetchSuggestions }: IAutoSuggest) => {
               {highlightText(s, inputText, i)}
             </li>
           ))}
-        </ul>
-      )}
+      </ul>
     </div>
   );
 };
