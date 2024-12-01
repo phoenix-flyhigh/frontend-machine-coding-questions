@@ -40,6 +40,19 @@ Each branch solves the problem as suggested by the branch name.
    git checkout <branch-name>
    ```
 
+5. Problem statement
+
+   * https://frontendeval.com/questions/shopping-list
+   * https://youtu.be/6YrkXWFgiV8?si=xZTWHH9OzDRiGRBO
+   * https://youtu.be/AsvybgZTryo?si=zCu43_KEaaHFooMO
+
+   Included: 
+   * Debouncing input
+   * Highlighted match in suggestions
+   * Keyboard navigation
+   * Caching
+
+
 ## Branches
 
 1. [accordions](https://github.com/phoenix-flyhigh/frontend-machine-coding-questions/tree/accordions)

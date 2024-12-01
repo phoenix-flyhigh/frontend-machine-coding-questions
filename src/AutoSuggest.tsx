@@ -29,6 +29,8 @@ export const AutoSuggest = ({ onSelect, fetchSuggestions }: IAutoSuggest) => {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [activeSuggestionId, setActiveSuggestionId] = useState(-1);
+
   const debouncedInputText = useDebounce<string>(inputText, 500);
   const { getItem, setItem } = useLocalStorage();
 
@@ -71,6 +73,27 @@ export const AutoSuggest = ({ onSelect, fetchSuggestions }: IAutoSuggest) => {
     onSelect(item);
     setSuggestions([]);
     setInputText("");
+    setActiveSuggestionId(-1);
+  };
+
+  const handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "ArrowDown" && suggestions.length > 0) {
+      setActiveSuggestionId((prev) =>
+        prev + 1 >= suggestions.length ? 0 : prev + 1
+      );
+    }
+    if (e.key === "ArrowUp" && suggestions.length > 0) {
+      setActiveSuggestionId((prev) =>
+        prev - 1 < 0 ? suggestions.length - 1 : prev - 1
+      );
+    }
+    if (
+      e.key === "Enter" &&
+      suggestions.length > 0 &&
+      activeSuggestionId >= 0
+    ) {
+      handleSelect(suggestions[activeSuggestionId]);
+    }
   };
 
   return (
@@ -79,6 +102,7 @@ export const AutoSuggest = ({ onSelect, fetchSuggestions }: IAutoSuggest) => {
         type="text"
         value={inputText}
         onChange={handleInput}
+        onKeyDown={handleKeydown}
         className="bg-black p-4 text-xl border-2 border-white rounded-lg w-full"
       />
       <ul className="absolute top-full bg-black z-10 max-h-60 h-fit shadow-md overflow-scroll text-left w-full border-x-2 border-slate-500">
@@ -100,7 +124,9 @@ export const AutoSuggest = ({ onSelect, fetchSuggestions }: IAutoSuggest) => {
               key={i}
               onClick={() => handleSelect(s)}
               role="button"
-              className="px-4 py-2 border-b-2 border-slate-500 cursor-pointer"
+              className={`px-4 py-2 border-b-2 border-slate-500 cursor-pointer ${
+                activeSuggestionId === i ? "bg-slate-500" : ""
+              }`}
             >
               {highlightText(s, inputText, i)}
             </li>
