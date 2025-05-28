@@ -15,7 +15,7 @@ function App() {
             triggerNotification({
               message: "This is an info message",
               type: NotificationType.INFO,
-              duration: 3000,
+              durationInSeconds: 3,
             });
           }}
         >
@@ -27,7 +27,7 @@ function App() {
             triggerNotification({
               message: "This is an success message",
               type: NotificationType.SUCCESS,
-              duration: 3000,
+              durationInSeconds: 3,
             });
           }}
         >
@@ -39,7 +39,7 @@ function App() {
             triggerNotification({
               message: "This is an warning message",
               type: NotificationType.WARNING,
-              duration: 3000,
+              durationInSeconds: 3,
             });
           }}
         >
@@ -51,7 +51,7 @@ function App() {
             triggerNotification({
               message: "This is an error message",
               type: NotificationType.ERROR,
-              duration: 3000,
+              durationInSeconds: 3,
             });
           }}
         >

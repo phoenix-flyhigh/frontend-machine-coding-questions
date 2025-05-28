@@ -1,14 +1,20 @@
 import { useState } from "react";
 import { NotificationType } from "./constants";
-import { Notification } from "./Notification";
+import NotificationWrapper from "./NotificationWrapper";
 
 interface triggerNotificationProps {
   message: string;
   type: NotificationType;
-  duration: number;
+  durationInSeconds: number;
 }
 
-type TNotification = { id: number; message: string; bgColor: string; duration: number };
+export type TNotification = {
+  id: number;
+  message: string;
+  bgColor: string;
+  duration: number;
+};
+
 type NotificationPosition =
   | "top-right"
   | "top-left"
@@ -27,28 +33,25 @@ export const useNotification = (position: NotificationPosition) => {
 
   const [notifications, setNotifications] = useState<TNotification[]>([]);
   const bottomPositions = ["bottom-left", "bottom-right", "bottom-center"];
-  const triggerNotification = ({ message, type , duration}: triggerNotificationProps) => {
+
+  const triggerNotification = ({
+    message,
+    type,
+    durationInSeconds,
+  }: triggerNotificationProps) => {
+    const duration = durationInSeconds * 1000;
+    const id = Date.now() * Math.random();
+
     setNotifications((prev) => {
-      if (bottomPositions.includes(position))
-        return [
-          {
-            id: Date.now(),
-            message,
-            bgColor: colorToNotificationType[type],
-            duration
-          },
-          ...prev,
-        ];
-      else
-        return [
-          ...prev,
-          {
-            id: Date.now(),
-            message,
-            bgColor: colorToNotificationType[type],
-            duration
-          },
-        ];
+      const newNotification = {
+        id,
+        message,
+        bgColor: colorToNotificationType[type],
+        duration,
+      };
+
+      if (bottomPositions.includes(position)) return [newNotification, ...prev];
+      else return [...prev, newNotification];
     });
   };
 
@@ -56,24 +59,14 @@ export const useNotification = (position: NotificationPosition) => {
     setNotifications((prev) => prev.filter((x) => x.id !== id));
   };
 
-  const NotificationComponent = (
-    <div
-      className={`${position} flex flex-col items-center gap-4 absolute m-6 w-1/4`}
-    >
-      {notifications.map((notification, i) => (
-        <Notification
-          key={i}
-          message={notification.message}
-          classList={`${notification.bgColor}`}
-          onClose={() => removeNotification(notification.id)}
-          duration={notification.duration}
-        />
-      ))}
-    </div>
-  );
-
   return {
     triggerNotification,
-    NotificationComponent,
+    NotificationComponent: (
+      <NotificationWrapper
+        position={position}
+        notifications={notifications}
+        onClose={(id) => removeNotification(id)}
+      />
+    ),
   };
 };

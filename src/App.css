@@ -23,7 +23,7 @@
 }
 
 .btn {
-    @apply w-2/5 text-white p-6;
+    @apply w-2/5 text-white p-6 text-lg;
 }
 
 
