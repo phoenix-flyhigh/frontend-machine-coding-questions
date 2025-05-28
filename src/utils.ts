@@ -12,19 +12,22 @@ export const getPaginationRange = (
   currentPage: number,
   siblings: number
 ) => {
-  const minPagesForEllipsis = 5 + 2 * siblings;
+  // [1, ... , siblings, currentPage, siblings, ... , lastPage]
+  const minPagesWithBothEllipsis = 5 + 2 * siblings;
 
-  if (totalPages <= minPagesForEllipsis) {
+  if (totalPages <= minPagesWithBothEllipsis) {
     return getRange(1, totalPages + 1);
   }
 
-  const leftBoundary = Math.max(currentPage - siblings, 1);
-  const rightBoundary = Math.min(currentPage + siblings, totalPages);
+  const leftBoundary = Math.max(1, currentPage - siblings);
+  const rightBoundary = Math.min(totalPages, currentPage + siblings);
 
   const needLeftEllipsis = leftBoundary > MIN_PAGES_NEAR_ELLIPSIS;
-  const needRightEllipsis = rightBoundary < totalPages - MIN_PAGES_NEAR_ELLIPSIS;
+  const needRightEllipsis =
+    rightBoundary < totalPages - MIN_PAGES_NEAR_ELLIPSIS;
 
   if (!needLeftEllipsis && needRightEllipsis) {
+    // [1, bufferPage = 1, siblings, currentPage, siblings, ...]
     const leftItemsCount = 3 + 2 * siblings;
     const leftRange = getRange(1, leftItemsCount + 1);
     return [...leftRange, " ...", totalPages];
