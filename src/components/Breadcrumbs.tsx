@@ -1,38 +1,39 @@
-import { useLocation, Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-const Breadcrumbs = () => {
+const BreadCrumbs = () => {
   const { pathname } = useLocation();
+  const paths = pathname.split("/").filter((x) => x);
+  let breadCrumbsPath = "";
 
-  const pathnames = pathname.split("/").filter((x) => x);
-  let breadcrumbpath = "";
-
-  return pathnames.length === 0 ? (
-    <></>
-  ) : (
-    <div className="flex gap-2">
-      <Link to="/" className="underline text-md font-semibold capitalize">
-        Home
-      </Link>
-      {pathnames.map((s, index) => {
-        const isLast = index === pathnames.length - 1;
-        breadcrumbpath += `/${s}`;
+  return (
+    <span>
+      {paths.length === 0 ? (
+        <span key="Home">Home</span>
+      ) : (
+        <Link to="/" className="underline font-semibold capitalize">
+          Home
+        </Link>
+      )}
+      {paths.map((path, i) => {
+        const isLast = i === paths.length - 1;
+        breadCrumbsPath += `/${path}`;
 
         return isLast ? (
-          <span key={s}> {`>  ${s}`} </span>
+          <span key={path}>{` > ${path}`}</span>
         ) : (
-          <span key={s}>
-            {`>  `}
+          <span key={path}>
+            {` > `}
             <Link
-              to={breadcrumbpath}
-              className="underline text-md font-semibold capitalize"
+              to={breadCrumbsPath}
+              className="underline font-semibold capitalize"
             >
-              {s}
+              {path}
             </Link>
           </span>
         );
       })}
-    </div>
+    </span>
   );
 };
 
-export default Breadcrumbs;
+export default BreadCrumbs;
