@@ -9,7 +9,6 @@ export const VirtualizedListOptimised = () => {
 
     const startIndex = Math.max(0, Math.floor(scrollTop / itemHeight) - overscan)
     const renderedNodesCount = Math.min(items.length - startIndex, Math.ceil(containerHeight / itemHeight) + overscan * 2)
-    
 
     const visibleItems = items.slice(startIndex, startIndex + renderedNodesCount)
     const totalHeight = items.length * itemHeight
@@ -22,33 +21,31 @@ export const VirtualizedListOptimised = () => {
                 border: '1px solid black',
                 width: '800px',
                 margin: '0 auto',
-                position: 'relative'
             }}
             onScroll={(e) => {
-                console.log("scroll event", e.currentTarget.scrollTop)
                 setScrollTop(e.currentTarget.scrollTop)
             }}>
-                <div style={{transform: `translateY(${startIndex * itemHeight}px)`}}>
-            <ul
-                style={{
-                    height: `${totalHeight}px`,
-                }}
-            >
-                {visibleItems.map((item, index) => (
-                    <li key={startIndex + index} style={{
-                        borderBottom: '1px solid #ccc',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        height: `${itemHeight}px`,
-                        boxSizing: 'border-box',
-                        width: '100%'
+            <div style={{ transform: `translateY(${startIndex * itemHeight}px)` }}>
+                <ul
+                    style={{
+                        height: `${totalHeight}px`,
                     }}
-                    >
-                        {item}
-                    </li>
-                ))}
-            </ul >
+                >
+                    {visibleItems.map((item, index) => (
+                        <li key={startIndex + index} style={{
+                            borderBottom: '1px solid #ccc',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            height: `${itemHeight}px`,
+                            boxSizing: 'border-box',
+                            width: '100%'
+                        }}
+                        >
+                            {item}
+                        </li>
+                    ))}
+                </ul >
             </div>
         </div >
     )

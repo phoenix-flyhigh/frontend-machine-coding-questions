@@ -25,7 +25,6 @@ export const VirtualizedList = () => {
                 position: 'relative'
             }}
             onScroll={(e) => {
-                console.log("scroll event", e.currentTarget.scrollTop)
                 setScrollTop(e.currentTarget.scrollTop)
             }}>
             <ul
